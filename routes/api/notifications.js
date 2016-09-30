@@ -15,8 +15,32 @@ router.post('/', function(req, res, next) {
     method: 'GET',
     json: true                                                                                                                        
   }
+  notifications.list(function(error, allDoc) {
+    if (error) {
+      return;
+    }
+    var allObj = {};
+    allDoc.rows.forEach(function(doc) {
+      allObj[doc.id] = doc;
+    })   
+    request(options, function (error, response, body) {
+      body.forEach(function(notification) {
+        var data = allObj[notification._id];
+        if (typeof data === "undefined") {
+          notifications.insert(notification, function(err, body, header) {
+            if (err) {
+              return console.error('[notifications.insert] ', err.message);
+            }
+          });
+        }
+      });
+    })
+    //console.log(allObj);
+  });
+  /*
   request(options, function (error, response, body) {
     body.forEach(function(notification) {
+      console.log(notification._id);
       notifications.get(notification._id, function(err, data){
         if (typeof data === "undefined") {
           notifications.insert(notification, function(err, body, header) {
@@ -28,6 +52,7 @@ router.post('/', function(req, res, next) {
       });
     });
   })
+  */
   res.render('index', { title: 'Express' });
 });
 
