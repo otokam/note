@@ -35,24 +35,7 @@ router.post('/', function(req, res, next) {
         }
       });
     })
-    //console.log(allObj);
   });
-  /*
-  request(options, function (error, response, body) {
-    body.forEach(function(notification) {
-      console.log(notification._id);
-      notifications.get(notification._id, function(err, data){
-        if (typeof data === "undefined") {
-          notifications.insert(notification, function(err, body, header) {
-            if (err) {
-              return console.error('[notifications.insert] ', err.message);
-            }
-          });
-        }
-      });
-    });
-  })
-  */
   res.render('index', { title: 'Express' });
 });
 
